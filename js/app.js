@@ -117,165 +117,170 @@ const resetForm = () => {
   document.getElementById("formpesan").value = null;
 };
 
-// const balasan = async (button) => {
-//   button.disabled = true;
-//   let tmp = button.innerText;
-//   button.innerText = "Loading...";
+const balasan = async (button) => {
+  button.disabled = true;
+  let tmp = button.innerText;
+  button.innerText = "Loading...";
 
-//   let id = button.getAttribute("data-uuid").toString();
-//   let token = localStorage.getItem("token") ?? "";
+  let id = button.getAttribute("data-uuid").toString();
+  let token = localStorage.getItem("token") ?? "";
 
-//   if (token.length == 0) {
-//     alert("Terdapat kesalahan, token kosong !");
-//     window.location.reload();
-//     return;
-//   }
+  if (token.length == 0) {
+    alert("Terdapat kesalahan, token kosong !");
+    window.location.reload();
+    return;
+  }
 
-//   const BALAS = document.getElementById("balasan");
-//   BALAS.innerHTML = renderLoading(1);
-//   document.getElementById("hadiran").style.display = "none";
-//   document.getElementById("labelhadir").style.display = "none";
+  const BALAS = document.getElementById("balasan");
+  BALAS.innerHTML = renderLoading(1);
+  document.getElementById("hadiran").style.display = "none";
+  document.getElementById("labelhadir").style.display = "none";
 
-//   const REQ = {
-//     method: "GET",
-//     headers: {
-//       Accept: "application/json",
-//       "Content-Type": "application/json",
-//       Authorization: "Bearer " + token,
-//     },
-//   };
+  const REQ = {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+  };
 
-//   await fetch(
-//     document.querySelector("body").getAttribute("data-url") +
-//       "/api/comment/" +
-//       id,
-//     REQ
-//   )
-//     .then((res) => res.json())
-//     .then((res) => {
-//       if (res.code == 200) {
-//         document.getElementById("kirim").style.display = "none";
-//         document.getElementById("batal").style.display = "block";
-//         document.getElementById("kirimbalasan").style.display = "block";
-//         document.getElementById("idbalasan").value = id;
+  await fetch(
+    document.querySelector("body").getAttribute("data-url") +
+      "/api/comment/" +
+      id,
+    REQ
+  )
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.code == 200) {
+        document.getElementById("kirim").style.display = "none";
+        document.getElementById("batal").style.display = "block";
+        document.getElementById("kirimbalasan").style.display = "block";
+        document.getElementById("idbalasan").value = id;
 
-//         BALAS.innerHTML = `
-//                 <div class="card-body bg-light shadow p-3 my-2 rounded-4">
-//                     <div class="d-flex flex-wrap justify-content-between align-items-center">
-//                         <p class="text-dark text-truncate m-0 p-0" style="font-size: 0.95rem;">
-//                             <strong>${escapeHtml(res.data.nama)}</strong>
-//                         </p>
-//                         <small class="text-dark m-0 p-0" style="font-size: 0.75rem;">${
-//                           res.data.created_at
-//                         }</small>
-//                     </div>
-//                     <hr class="text-dark my-1">
-//                     <p class="text-dark m-0 p-0" style="white-space: pre-line">${escapeHtml(
-//                       res.data.komentar
-//                     )}</p>
-//                 </div>`;
-//       }
+        BALAS.innerHTML = `
+                <div class="card-body bg-light shadow p-3 my-2 rounded-4">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center">
+                        <p class="text-dark text-truncate m-0 p-0" style="font-size: 0.95rem;">
+                            <strong>${escapeHtml(res.data.nama)}</strong>
+                        </p>
+                        <small class="text-dark m-0 p-0" style="font-size: 0.75rem;">${
+                          res.data.created_at
+                        }</small>
+                    </div>
+                    <hr class="text-dark my-1">
+                    <p class="text-dark m-0 p-0" style="white-space: pre-line">${escapeHtml(
+                      res.data.komentar
+                    )}</p>
+                </div>`;
+      }
 
-//       if (res.error.length != 0) {
-//         if (res.error[0] == "Expired token") {
-//           alert("Terdapat kesalahan, token expired !");
-//           window.location.reload();
-//           return;
-//         }
+      if (res.error.length != 0) {
+        if (res.error[0] == "Expired token") {
+          alert("Terdapat kesalahan, token expired !");
+          window.location.reload();
+          return;
+        }
 
-//         alert(res.error[0]);
-//       }
-//     })
-//     .catch((err) => {
-//       resetForm();
-//       alert(err);
-//     });
+        alert(res.error[0]);
+      }
+    })
+    .catch((err) => {
+      resetForm();
+      alert(err);
+    });
 
-//   document.getElementById("ucapan").scrollIntoView({ behavior: "smooth" });
-//   button.disabled = false;
-//   button.innerText = tmp;
-// };
+  document.getElementById("ucapan").scrollIntoView({ behavior: "smooth" });
+  button.disabled = false;
+  button.innerText = tmp;
+};
 
-// const kirimBalasan = async () => {
-//     let nama = document.getElementById('formnama').value;
-//     let komentar = document.getElementById('formpesan').value;
-//     let token = localStorage.getItem('token') ?? '';
-//     let id = document.getElementById('idbalasan').value;
+const kirimBalasan = async () => {
+  let nama = document.getElementById("formnama").value;
+  let komentar = document.getElementById("formpesan").value;
+  let token = localStorage.getItem("token") ?? "";
+  let id = document.getElementById("idbalasan").value;
 
-//     if (token.length == 0) {
-//         alert('Terdapat kesalahan, token kosong !');
-//         window.location.reload();
-//         return;
-//     }
+  if (token.length == 0) {
+    alert("Terdapat kesalahan, token kosong !");
+    window.location.reload();
+    return;
+  }
 
-//     if (nama.length == 0) {
-//         alert('nama tidak boleh kosong');
-//         return;
-//     }
+  if (nama.length == 0) {
+    alert("nama tidak boleh kosong");
+    return;
+  }
 
-//     if (nama.length >= 35) {
-//         alert('panjangan nama maksimal 35');
-//         return;
-//     }
+  if (nama.length >= 35) {
+    alert("panjangan nama maksimal 35");
+    return;
+  }
 
-//     if (komentar.length == 0) {
-//         alert('pesan tidak boleh kosong');
-//         return;
-//     }
+  if (komentar.length == 0) {
+    alert("pesan tidak boleh kosong");
+    return;
+  }
 
-//     document.getElementById('batal').disabled = true;
-//     document.getElementById('kirimbalasan').disabled = true;
-//     let tmp = document.getElementById('kirimbalasan').innerHTML;
-//     document.getElementById('kirimbalasan').innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
+  document.getElementById("batal").disabled = true;
+  document.getElementById("kirimbalasan").disabled = true;
+  let tmp = document.getElementById("kirimbalasan").innerHTML;
+  document.getElementById(
+    "kirimbalasan"
+  ).innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
 
-//     const REQ = {
-//         method: 'POST',
-//         headers: {
-//             'Accept': 'application/json',
-//             'Content-Type': 'application/json',
-//             'Authorization': 'Bearer ' + token
-//         },
-//         body: JSON.stringify({
-//             nama: nama,
-//             id: id,
-//             komentar: komentar
-//         })
-//     };
+  const REQ = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify({
+      nama: nama,
+      id: id,
+      komentar: komentar,
+    }),
+  };
 
-//     let isSuccess = false;
+  let isSuccess = false;
 
-//     await fetch(document.querySelector('body').getAttribute('data-url') + '/api/comment', REQ)
-//         .then((res) => res.json())
-//         .then((res) => {
-//             if (res.code == 201) {
-//                 isSuccess = true;
-//             }
+  await fetch(
+    document.querySelector("body").getAttribute("data-url") + "/api/comment",
+    REQ
+  )
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.code == 201) {
+        isSuccess = true;
+      }
 
-//             if (res.error.length != 0) {
-//                 if (res.error[0] == 'Expired token') {
-//                     alert('Terdapat kesalahan, token expired !');
-//                     window.location.reload();
-//                     return;
-//                 }
+      if (res.error.length != 0) {
+        if (res.error[0] == "Expired token") {
+          alert("Terdapat kesalahan, token expired !");
+          window.location.reload();
+          return;
+        }
 
-//                 alert(res.error[0]);
-//             }
-//         })
-//         .catch((err) => {
-//             resetForm();
-//             alert(err);
-//         });
+        alert(res.error[0]);
+      }
+    })
+    .catch((err) => {
+      resetForm();
+      alert(err);
+    });
 
-//     if (isSuccess) {
-//         await ucapan();
-//         document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-//         resetForm();
-//     }
+  if (isSuccess) {
+    await ucapan();
+    document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+    resetForm();
+  }
 
-//     document.getElementById('batal').disabled = false;
-//     document.getElementById('kirimbalasan').disabled = false;
-//     document.getElementById('kirimbalasan').innerHTML = tmp;
-// };
+  document.getElementById("batal").disabled = false;
+  document.getElementById("kirimbalasan").disabled = false;
+  document.getElementById("kirimbalasan").innerHTML = tmp;
+};
 
 const innerCard = (comment) => {
   let result = "";
@@ -480,125 +485,127 @@ const ucapan = async () => {
     .catch((err) => alert(err));
 };
 
-// const login = async () => {
-//     document.getElementById('daftarucapan').innerHTML = renderLoading(pagination.getPer());
-//     let body = document.querySelector('body');
+const login = async () => {
+  document.getElementById("daftarucapan").innerHTML = renderLoading(
+    pagination.getPer()
+  );
+  let body = document.querySelector("body");
 
-//     const REQ = {
-//         method: 'POST',
-//         headers: {
-//             'Accept': 'application/json',
-//             'Content-Type': 'application/json'
-//         },
-//         body: JSON.stringify({
-//             email: body.getAttribute('data-email').toString(),
-//             password: body.getAttribute('data-password').toString()
-//         })
-//     };
+  const REQ = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email: body.getAttribute("data-email").toString(),
+      password: body.getAttribute("data-password").toString(),
+    }),
+  };
 
-//     await fetch(body.getAttribute('data-url') + '/api/login', REQ)
-//         .then((res) => res.json())
-//         .then((res) => {
-//             if (res.code == 200) {
-//                 localStorage.removeItem('token');
-//                 localStorage.setItem('token', res.data.token);
-//                 ucapan();
-//             }
+  await fetch(body.getAttribute("data-url") + "/api/login", REQ)
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.code == 200) {
+        localStorage.removeItem("token");
+        localStorage.setItem("token", res.data.token);
+        ucapan();
+      }
 
-//             if (res.error.length != 0) {
-//                 alert('Terdapat kesalahan, ' + res.error[0]);
-//                 window.location.reload();
-//                 return;
-//             }
-//         })
-//         .catch(() => {
-//             alert('Terdapat kesalahan, otomatis reload halaman');
-//             window.location.reload();
-//             return;
-//         });
-// };
+      if (res.error.length != 0) {
+        alert("Terdapat kesalahan, " + res.error[0]);
+        window.location.reload();
+        return;
+      }
+    })
+    .catch(() => {
+      alert("Terdapat kesalahan, otomatis reload halaman");
+      window.location.reload();
+      return;
+    });
+};
 
-// const kirim = async () => {
-//   let nama = document.getElementById("formnama").value;
-//   let hadir = document.getElementById("hadiran").value;
-//   let komentar = document.getElementById("formpesan").value;
-//   let token = localStorage.getItem("token") ?? "";
+const kirim = async () => {
+  let nama = document.getElementById("formnama").value;
+  let hadir = document.getElementById("hadiran").value;
+  let komentar = document.getElementById("formpesan").value;
+  let token = localStorage.getItem("token") ?? "";
 
-//   if (token.length == 0) {
-//     alert("Terdapat kesalahan, token kosong !");
-//     window.location.reload();
-//     return;
-//   }
+  if (token.length == 0) {
+    alert("Terdapat kesalahan, token kosong !");
+    window.location.reload();
+    return;
+  }
 
-//   if (nama.length == 0) {
-//     alert("nama tidak boleh kosong");
-//     return;
-//   }
+  if (nama.length == 0) {
+    alert("nama tidak boleh kosong");
+    return;
+  }
 
-//   if (nama.length >= 35) {
-//     alert("panjangan nama maksimal 35");
-//     return;
-//   }
+  if (nama.length >= 35) {
+    alert("panjangan nama maksimal 35");
+    return;
+  }
 
-//   if (hadir == 0) {
-//     alert("silahkan pilih kehadiran");
-//     return;
-//   }
+  if (hadir == 0) {
+    alert("silahkan pilih kehadiran");
+    return;
+  }
 
-//   if (komentar.length == 0) {
-//     alert("pesan tidak boleh kosong");
-//     return;
-//   }
+  if (komentar.length == 0) {
+    alert("pesan tidak boleh kosong");
+    return;
+  }
 
-//   document.getElementById("kirim").disabled = true;
-//   let tmp = document.getElementById("kirim").innerHTML;
-//   document.getElementById(
-//     "kirim"
-//   ).innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
+  document.getElementById("kirim").disabled = true;
+  let tmp = document.getElementById("kirim").innerHTML;
+  document.getElementById(
+    "kirim"
+  ).innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span>Loading...`;
 
-//   const REQ = {
-//     method: "POST",
-//     headers: {
-//       Accept: "application/json",
-//       "Content-Type": "application/json",
-//       Authorization: "Bearer " + token,
-//     },
-//     body: JSON.stringify({
-//       nama: nama,
-//       hadir: hadir == 1,
-//       komentar: komentar,
-//     }),
-//   };
+  const REQ = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
+    },
+    body: JSON.stringify({
+      nama: nama,
+      hadir: hadir == 1,
+      komentar: komentar,
+    }),
+  };
 
-//   await fetch(
-//     document.querySelector("body").getAttribute("data-url") + "/api/comment",
-//     REQ
-//   )
-//     .then((res) => res.json())
-//     .then((res) => {
-//       if (res.code == 201) {
-//         resetForm();
-//         pagination.reset();
-//       }
+  await fetch(
+    document.querySelector("body").getAttribute("data-url") + "/api/comment",
+    REQ
+  )
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.code == 201) {
+        resetForm();
+        pagination.reset();
+      }
 
-//       if (res.error.length != 0) {
-//         if (res.error[0] == "Expired token") {
-//           alert("Terdapat kesalahan, token expired !");
-//           window.location.reload();
-//           return;
-//         }
+      if (res.error.length != 0) {
+        if (res.error[0] == "Expired token") {
+          alert("Terdapat kesalahan, token expired !");
+          window.location.reload();
+          return;
+        }
 
-//         alert(res.error[0]);
-//       }
-//     })
-//     .catch((err) => {
-//       resetForm();
-//       alert(err);
-//     });
+        alert(res.error[0]);
+      }
+    })
+    .catch((err) => {
+      resetForm();
+      alert(err);
+    });
 
-//   document.getElementById("kirim").disabled = false;
-//   document.getElementById("kirim").innerHTML = tmp;
-// };
+  document.getElementById("kirim").disabled = false;
+  document.getElementById("kirim").innerHTML = tmp;
+};
 
 const progressBar = (() => {
   let bar = document.getElementById("bar");
